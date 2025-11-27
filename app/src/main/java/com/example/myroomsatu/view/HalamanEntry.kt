@@ -15,14 +15,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myroomsatu.R
+import com.example.myroomsatu.R          // ← sudah benar
 import com.example.myroomsatu.roomsatu.view.route.DestinasiEntry
 import kotlinx.coroutines.launch
-import com.example.myroomsatu.view.viewmodel.DetailSiswa
-import com.example.myroomsatu.view.viewmodel.EntryViewModel
-import com.example.myroomsatu.view.viewmodel.UIStateSiswa
+import com.example.myroomsatu.viewmodel.EntryViewModel
+import com.example.myroomsatu.viewmodel.EntryViewModel.UIStateSiswa
+import com.example.myroomsatu.viewmodel.EntryViewModel.DetailSiswa
 import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
 import com.example.roomsatu.view.SiswaTopAppBar
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +47,7 @@ fun EntrySiswaScreen(
     ) { innerPadding ->
         EntrySiswaBody(
             uiStateSiswa = viewModel.uiStateSiswa,
-            onSiswaValueChange = viewModel::updateUiState,
+            onSiswaValueChange = viewModel::updateUIState,
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.saveSiswa()
@@ -101,6 +102,7 @@ fun FormInputSiswa(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
+
         OutlinedTextField(
             value = detailSiswa.nama,
             onValueChange = { onValueChange(detailSiswa.copy(nama = it)) },
