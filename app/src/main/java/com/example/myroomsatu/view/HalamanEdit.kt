@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myroomsatu.view.route.DestinasiEditSiswa
 import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
-import com.example.myroomsatu.viewmodel.EditViewModel
+import com.example.myroomsatu.view.viewmodel.EditViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

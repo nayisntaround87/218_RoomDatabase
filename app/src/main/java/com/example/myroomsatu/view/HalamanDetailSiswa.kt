@@ -24,24 +24,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myroomsatu.view.route.DestinasiDetailSiswa
-import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
 import com.example.myroomsatu.R
 import com.example.myroomsatu.room.Siswa
+import com.example.myroomsatu.view.route.DestinasiDetailSiswa
+import com.example.myroomsatu.view.viewmodel.DetailSiswaUiState
+import com.example.myroomsatu.view.viewmodel.DetailViewModel
+import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
+import com.example.myroomsatu.mapper.toSiswa // Untuk .toSiswa()
+
 import kotlinx.coroutines.launch
-import com.example.myroomsatu.view.viewmodel.toSiswa
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
-import com.example.myroomsatu.view.viewmodel.provider.DetailSiswaUiState
-import com.example.myroomsatu.view.viewmodel.provider.DetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,7 +131,7 @@ private fun BodyDetailDataSiswa(
 fun DetailDataSiswa(
     siswa: Siswa, modifier: Modifier = Modifier
 ) {
-    Card (
+    Card(
         modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -142,6 +143,16 @@ fun DetailDataSiswa(
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
+            BarisDetailData(
+                labelResID = R.string.nama1,
+                itemDetail = siswa.nama,
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
+                )
+            )
             BarisDetailData(
                 labelResID = R.string.alamat1,
                 itemDetail = siswa.alamat,
@@ -167,12 +178,11 @@ fun DetailDataSiswa(
     }
 }
 
-
 @Composable
 private fun BarisDetailData(
     @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
 ) {
-    Row (modifier = modifier) {
+    Row(modifier = modifier) {
         Text(stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
         Text(text = itemDetail, fontWeight = FontWeight.Bold)

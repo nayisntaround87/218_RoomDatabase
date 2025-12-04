@@ -1,5 +1,6 @@
 package com.example.myroomsatu.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,12 +24,13 @@ import com.example.myroomsatu.room.Siswa
 import com.example.myroomsatu.view.route.DestinasiHome // Import yang DIBUTUHKAN!
 import com.example.myroomsatu.view.viewmodel.HomeViewModel
 import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
-import com.example.roomsatu.view.SiswaTopAppBar
+import com.example.myroomsatu.viewmodel.EntryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToItemDetail:(Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel .Factory)
 ) {
@@ -60,6 +62,7 @@ fun HomeScreen(
         val uiStateSiswa by viewModel.homeUiState.collectAsState()
         BodyHome(
             itemSiswa = uiStateSiswa.listSiswa,
+            onSiswaClick = navigateToItemDetail,
             modifier = Modifier
                 .padding(paddingValues = innerPadding)
                 .fillMaxSize()
@@ -70,6 +73,7 @@ fun HomeScreen(
 @Composable
 fun BodyHome(
     itemSiswa: List<Siswa>,
+    onSiswaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -85,6 +89,7 @@ fun BodyHome(
         } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
+                onSiswaClick = {onSiswaClick(it.id)},
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
@@ -94,6 +99,7 @@ fun BodyHome(
 @Composable
 fun ListSiswa(
     itemSiswa: List<Siswa>,
+    onSiswaClick: (Siswa)-> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
@@ -104,6 +110,7 @@ fun ListSiswa(
             DataSiswa(
                 siswa = person,
                 modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_small))
+                    .clickable{ onSiswaClick(person)}
             )
         }
     }

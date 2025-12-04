@@ -1,13 +1,16 @@
-package com.example.myroomsatu.viewmodel
+package com.example.myroomsatu.view.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myroomsatu.mapper.toSiswa
+import com.example.myroomsatu.mapper.toUiStateSiswa
 import com.example.myroomsatu.repositori.RepositoriSiswa
 import com.example.myroomsatu.view.route.DestinasiDetailSiswa
+import com.example.myroomsatu.viewmodel.EntryViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -33,10 +36,15 @@ class EditViewModel(
 
     fun updateUiState(detailSiswa: EntryViewModel.DetailSiswa) {
         uiStateSiswa =
-            EntryViewModel.UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
+            EntryViewModel.UIStateSiswa(
+                detailSiswa = detailSiswa,
+                isEntryValid = validasiInput(detailSiswa)
+            )
     }
 
-    private fun validasiInput(uiState: EntryViewModel.DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
+    private fun validasiInput(
+        uiState: EntryViewModel.DetailSiswa = uiStateSiswa.detailSiswa
+    ): Boolean {
         return with(uiState) {
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
@@ -44,7 +52,9 @@ class EditViewModel(
 
     suspend fun updateSiswa() {
         if (validasiInput(uiStateSiswa.detailSiswa)) {
-            repositoriSiswa.updateSiswa(uiStateSiswa.detailSiswa.toSiswa())
+            repositoriSiswa.updateSiswa(
+                uiStateSiswa.detailSiswa.toSiswa()
+            )
         }
     }
 }
