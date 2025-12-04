@@ -1,4 +1,4 @@
-package com.example.roomsatu.view
+package com.example.myroomsatu.view
 
 
 import androidx.compose.material.icons.Icons
