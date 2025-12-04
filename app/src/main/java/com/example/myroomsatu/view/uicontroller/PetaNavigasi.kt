@@ -4,20 +4,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myroomsatu.roomsatu.view.route.DestinasiEntry
-import com.example.myroomsatu.view.route.DestinasiHome
+import androidx.navigation.navArgument
+import com.example.myroomsatu.view.DetailSiswaScreen
 import com.example.myroomsatu.view.EntrySiswaScreen
 import com.example.myroomsatu.view.HomeScreen
-
+import com.example.myroomsatu.view.route.DestinasiEntry
+import com.example.myroomsatu.view.route.DestinasiDetailSiswa
+import com.example.myroomsatu.view.route.DestinasiHome
 
 @Composable
 fun SiswaApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
-) {
+){
     HostNavigasi(navController = navController, modifier = modifier)
 }
 
@@ -33,17 +36,35 @@ fun HostNavigasi(
         modifier = modifier
     ) {
 
-        // HOME SCREEN
+        // HOME
         composable(DestinasiHome.route) {
             HomeScreen(
-                navigateToItemEntry = { navController.navigate(DestinasiEntry.route) }
+                navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
+                navigateToItemDetail = { id ->
+                    navController.navigate("${DestinasiDetailSiswa.route}/$id")
+                }
             )
         }
 
-        // ENTRY (FORM)
+        // ENTRY
         composable(DestinasiEntry.route) {
             EntrySiswaScreen(
                 navigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // DETAIL
+        composable(
+            route = DestinasiDetailSiswa.routeWithArgs,
+            arguments = listOf(navArgument(DestinasiDetailSiswa.ItemIdArg) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt(DestinasiDetailSiswa.ItemIdArg) ?: 0
+
+            DetailSiswaScreen(
+                navigateBack = {navController.navigateUp()},
+                navigateToEditItem = { editId -> navController.navigate("edit/$editId") },
             )
         }
     }
